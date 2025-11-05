@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_publication_date_object
+    - node.type.scholarly_work
+  module:
+    - datetime
+id: node.scholarly_work.field_publication_date_object
+field_name: field_publication_date_object
+entity_type: node
+bundle: scholarly_work
+label: 'Publication Date (Object)'
+description: 'Publication date as Date object for sorting and filtering'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: datetime

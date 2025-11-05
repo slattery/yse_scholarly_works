@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_abstract_text_index
+    - node.type.scholarly_work
+id: node.scholarly_work.field_abstract_text_index
+field_name: field_abstract_text_index
+entity_type: node
+bundle: scholarly_work
+label: 'Abstract (Index)'
+description: 'Abstract text for search indexing (may not be displayed)'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: text

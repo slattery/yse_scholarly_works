@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_publication_year_digits
+    - node.type.scholarly_work
+id: node.scholarly_work.field_publication_year_digits
+field_name: field_publication_year_digits
+entity_type: node
+bundle: scholarly_work
+label: 'Publication Year (Integer)'
+description: 'Publication year as integer for sorting and filtering'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: integer

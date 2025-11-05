@@ -1,0 +1,16 @@
+name: 'YSE Scholarly Works'
+description: 'Imports and manages scholarly works from OpenAlex with comprehensive metadata and typed identifiers.'
+type: module
+version: '10.1.0-alpha1'
+core_version_requirement: '^10 || ^11'
+
+dependencies:
+  - typed_identifier
+  - migrate_plus
+  - migrate_conditions
+  - node
+  - field
+  - migrate
+
+package: 'Yale School of the Environment'
+author: 'Yale School of the Environment'

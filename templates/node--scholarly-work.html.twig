@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a scholarly work node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id" and "label" are available. For properties, use
+ *   node.getFieldDefinitions() to get information about fields.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the
+ *   printing of a given child element.
+ * - author_name: Themed username of node author with link.
+ * - date: Themed creation date field.
+ * - view_mode: View mode; for example, "full", "teaser", etc.
+ *
+ * @see template_preprocess_node()
+ */
+#}
+<article{{ attributes }}>
+  <header>
+    {{ title_prefix }}
+    {% if not page %}
+      <h2{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+  </header>
+
+  <div{{ content_attributes }}>
+    {{ content }}
+  </div>
+</article>

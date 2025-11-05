@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * Theme implementation for searchidx view mode of scholarly work node.
+ *
+ * This template is used for Search API indexing (not directly visible to users).
+ * Renders all indexable content as plain text with minimal markup.
+ *
+ * @see template_preprocess_node()
+ */
+#}
+<article{{ attributes }} class="scholarly-work-searchidx">
+  <div{{ content_attributes }} class="scholarly-work-searchidx__content">
+    {{ content }}
+  </div>
+</article>

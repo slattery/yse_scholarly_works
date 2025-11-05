@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_raw_sdgs
+    - node.type.scholarly_work
+id: node.scholarly_work.field_raw_sdgs
+field_name: field_raw_sdgs
+entity_type: node
+bundle: scholarly_work
+label: 'Sustainable Development Goals'
+description: 'UN Sustainable Development Goal numbers (1-17) associated with the work'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: integer

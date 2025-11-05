@@ -1,0 +1,76 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.scholarly_work.field_raw_type
+    - field.field.node.scholarly_work.field_work_display_name
+    - field.field.node.scholarly_work.field_source_display_name
+    - field.field.node.scholarly_work.field_publication_date_string
+    - field.field.node.scholarly_work.field_publication_year_digits
+    - node.type.scholarly_work
+id: node.scholarly_work.card
+targetEntityType: node
+bundle: scholarly_work
+mode: card
+content:
+  field_raw_type:
+    type: string
+    region: content
+    weight: 0
+    settings:
+      link_to_entity: false
+    third_party_settings: {}
+  field_work_display_name:
+    type: string
+    region: content
+    weight: 1
+    settings:
+      link_to_entity: false
+    third_party_settings: {}
+  field_source_display_name:
+    type: string
+    region: content
+    weight: 2
+    settings:
+      link_to_entity: false
+    third_party_settings: {}
+  field_publication_date_string:
+    type: string
+    region: content
+    weight: 3
+    settings:
+      link_to_entity: false
+    third_party_settings: {}
+  field_publication_year_digits:
+    type: number_integer
+    region: content
+    weight: 4
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {}
+hidden:
+  langcode: true
+  status: true
+  field_abstract_text_display: true
+  field_abstract_text_index: true
+  field_authors_typed_ids: true
+  field_biblio_issue: true
+  field_biblio_page_first: true
+  field_biblio_page_last: true
+  field_biblio_volume: true
+  field_citation_text: true
+  field_doi: true
+  field_license: true
+  field_primary_url: true
+  field_publication_date_object: true
+  field_publication_year_string: true
+  field_qa_status: true
+  field_raw_names_first: true
+  field_raw_names_last: true
+  field_raw_names_middle: true
+  field_raw_oa_status: true
+  field_raw_sdgs: true
+  field_repo_created_date: true
+  field_repo_updated_date: true
+  field_work_typed_ids: true

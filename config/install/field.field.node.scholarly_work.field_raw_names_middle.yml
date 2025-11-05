@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_raw_names_middle
+    - node.type.scholarly_work
+id: node.scholarly_work.field_raw_names_middle
+field_name: field_raw_names_middle
+entity_type: node
+bundle: scholarly_work
+label: 'Other Authors'
+description: 'Middle author display names as comma-separated string'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: text

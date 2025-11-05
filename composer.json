@@ -1,0 +1,16 @@
+{
+  "name": "slattery/yse_scholarly_works",
+  "description": "Create listings for academic output",
+  "type": "drupal-custom-module",
+  "require": {
+    "php": ">=8.3",
+    "slattery/typed_identifier": "^0.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Drupal\\yse_scholarly_works\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

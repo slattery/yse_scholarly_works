@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Theme implementation for full view mode of scholarly work node.
+ *
+ * This template displays a complete scholarly work record with all available details.
+ *
+ * @see template_preprocess_node()
+ */
+#}
+<article{{ attributes }}>
+  <header>
+    {{ title_prefix }}
+    {% if not page %}
+      <h2{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+  </header>
+
+  <div{{ content_attributes }} class="scholarly-work-full">
+    {# Render all configured fields via display configuration #}
+    {{ content }}
+  </div>
+</article>

@@ -1,0 +1,212 @@
+id: yse_scholarly_works
+label: 'YSE Scholarly Works Import'
+migration_group: yse_scholarly_works
+
+# Dependencies on contrib modules
+dependencies:
+  enforced:
+    module:
+      - migrate_plus
+      - migrate_conditions
+
+source:
+  plugin: url
+  data_urls:
+    - 'file:///app/monfrere/yse_scholarly_works/scratch/openalexrecords.json'
+  fields:
+    - name: id
+      label: Work OpenAlex ID
+    - name: ids
+      label: All work identifiers (object)
+    - name: doi
+      label: DOI
+    - name: type
+      label: Work type
+    - name: title
+      label: Work text title
+    - name: display_name
+      label: Work title
+    - name: authorships
+      label: Author array
+    - name: raw_names_first
+      label: First author name
+    - name: raw_names_middle
+      label: Middle author names
+    - name: raw_names_last
+      label: Last author name
+    - name: biblio
+      label: Bibliographic info (object)
+    - name: primary_location
+      label: Primary location (object)
+    - name: open_access
+      label: Open access (object)
+    - name: publication_date
+      label: Publication date string
+    - name: publication_year
+      label: Publication year
+    - name: sustainable_development_goals
+      label: SDG array
+    - name: created_date
+      label: Repository created date
+    - name: updated_date
+      label: Repository updated date
+    - name: abstract_assembled
+      label: Abstract text
+
+process:
+  # === Node Title and Basic Fields ===
+  title: title
+
+  # === Typed Identifier Transformations (using unified plugin) ===
+  field_work_typed_ids:
+    plugin: to_typed_identifier
+    source: ids
+    is_nested: false
+    exclude_keys:
+      - mag
+    check_field_settings: true
+    use_generic_fallback: true
+    destination_field: field_work_typed_ids
+
+  field_authors_typed_ids:
+    plugin: to_typed_identifier
+    source: authorships
+    is_nested: true
+    exclude_keys:
+      - display_name
+      - author_position
+    check_field_settings: true
+    use_generic_fallback: true
+    destination_field: field_authors_typed_ids
+
+  # === Simple Field Mappings ===
+  field_doi: doi
+  field_raw_type: type
+  field_work_display_name: display_name
+
+  # === Nested Field Extraction ===
+  field_source_display_name:
+    plugin: get
+    source: primary_location/source/display_name
+
+  field_license:
+    plugin: get
+    source: primary_location/license
+
+  field_primary_url:
+    plugin: get
+    source: primary_location/landing_page_url
+
+  # === Author Names ===
+  field_raw_names_first: raw_names_first
+  field_raw_names_middle: raw_names_middle
+  field_raw_names_last: raw_names_last
+
+  # === Publication Details ===
+  field_publication_date_string: publication_date
+  field_publication_year_string:
+    plugin: callback
+    callable: strval
+    source: publication_year
+
+  field_publication_year_digits: publication_year
+
+  field_publication_date_object:
+    plugin: format_date
+    source: publication_date
+    from_format: 'Y-m-d'
+    to_format: 'Y-m-d'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  # === Bibliographic Information ===
+  field_biblio_volume:
+    plugin: get
+    source: biblio/volume
+
+  field_biblio_issue:
+    plugin: get
+    source: biblio/issue
+
+  field_biblio_page_first:
+    plugin: get
+    source: biblio/first_page
+
+  field_biblio_page_last:
+    plugin: get
+    source: biblio/last_page
+
+  # === Open Access Status ===
+  field_raw_oa_status:
+    plugin: get
+    source: open_access/oa_status
+
+  # === Abstract Fields (with License Condition) ===
+  # Use migrate_conditions module to skip abstract if license not allowed
+  field_abstract_text_display:
+    -
+      plugin: get
+      source: abstract_assembled
+    -
+      plugin: skip_on_condition
+      method: row
+      condition:
+        plugin: in_array
+        source: primary_location/license
+        array:
+          - cc-by
+          - cc-by-nc
+          - cc-by-nc-sa
+          - cc-by-sa
+          - public-domain
+        negate: true
+
+  field_abstract_text_index: abstract_assembled
+
+  # === Date Fields (ISO 8601 Parsing) ===
+  field_repo_created_date:
+    plugin: format_date
+    source: created_date
+    from_format: 'Y-m-d\TH:i:s.u'
+    to_format: 'Y-m-d'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  field_repo_updated_date:
+    plugin: format_date
+    source: updated_date
+    from_format: 'Y-m-d\TH:i:s.u'
+    to_format: 'Y-m-d'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  # === Sustainable Development Goals ===
+  # Extract numeric SDG IDs from URL format using pipeline
+  field_raw_sdgs:
+    plugin: sub_process
+    source: sustainable_development_goals
+    process:
+      value:
+        -
+          plugin: get
+          source: id
+        -
+          plugin: skip_on_empty
+          method: process
+        -
+          plugin: explode
+          delimiter: '/'
+        -
+          plugin: extract
+          index: -1
+
+destination:
+  plugin: entity:node
+  default_bundle: scholarly_work
+  # Use work_typed_ids (specifically openalex value) as unique key for upsert
+  key:
+    - field_work_typed_ids
+
+migration_dependencies:
+  required: []
+  optional: []

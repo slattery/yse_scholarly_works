@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - typed_identifier
+id: node.field_work_typed_ids
+field_name: field_work_typed_ids
+entity_type: node
+type: typed_identifier
+settings:
+  allowed_identifier_types:
+    - openalex
+    - doi
+    - pmid
+    - pmcid
+    - mag
+    - generic
+  custom_generic_labels: true
+module: typed_identifier
+locked: false
+cardinality: -1
+translatable: false
+indexes: {}
+persist_with_no_fields: false
+custom_storage: false

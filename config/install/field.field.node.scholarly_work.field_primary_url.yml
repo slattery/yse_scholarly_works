@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_primary_url
+    - node.type.scholarly_work
+id: node.scholarly_work.field_primary_url
+field_name: field_primary_url
+entity_type: node
+bundle: scholarly_work
+label: 'Link to Work'
+description: 'URL to landing page or repository location'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: string

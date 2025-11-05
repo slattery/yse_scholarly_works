@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_raw_names_last
+    - node.type.scholarly_work
+id: node.scholarly_work.field_raw_names_last
+field_name: field_raw_names_last
+entity_type: node
+bundle: scholarly_work
+label: 'Last Author'
+description: 'Last author display name'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: string

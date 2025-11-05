@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_authors_typed_ids
+    - node.type.scholarly_work
+  module:
+    - typed_identifier
+id: node.scholarly_work.field_authors_typed_ids
+field_name: field_authors_typed_ids
+entity_type: node
+bundle: scholarly_work
+label: 'Author Identifiers'
+description: 'Author identifiers (OpenAlex, ORCID, etc.)'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings:
+  allowed_identifier_types:
+    - openalex
+    - orcid
+    - netid
+    - generic
+  custom_generic_labels: true
+field_type: typed_identifier

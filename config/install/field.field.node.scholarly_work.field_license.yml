@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_license
+    - node.type.scholarly_work
+id: node.scholarly_work.field_license
+field_name: field_license
+entity_type: node
+bundle: scholarly_work
+label: License
+description: 'Open access license identifier'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: string

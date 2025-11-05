@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @file
+ * YSE Scholarly Works module - Import and management of scholarly works.
+ *
+ * This module provides migration and field configurations for importing
+ * scholarly works from OpenAlex with comprehensive metadata support,
+ * including typed identifiers and automated field-aware validation.
+ */

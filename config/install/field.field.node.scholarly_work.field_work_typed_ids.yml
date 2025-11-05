@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_work_typed_ids
+    - node.type.scholarly_work
+  module:
+    - typed_identifier
+id: node.scholarly_work.field_work_typed_ids
+field_name: field_work_typed_ids
+entity_type: node
+bundle: scholarly_work
+label: 'Work Identifiers'
+description: 'Unique identifiers for this scholarly work (OpenAlex, DOI, etc.)'
+required: true
+translatable: false
+default_value: []
+default_value_callback: ''
+settings:
+  allowed_identifier_types:
+    - openalex
+    - doi
+    - pmid
+    - pmcid
+    - url
+    - urn
+    - generic
+  custom_generic_labels: true
+field_type: typed_identifier

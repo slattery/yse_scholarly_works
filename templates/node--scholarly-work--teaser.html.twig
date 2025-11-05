@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Theme implementation for teaser view mode of scholarly work node.
+ *
+ * This template displays a summary for lists/feeds with key publication info.
+ *
+ * @see template_preprocess_node()
+ */
+#}
+<article{{ attributes }} class="scholarly-work-teaser">
+  <header>
+    {{ title_prefix }}
+    <h3{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h3>
+    {{ title_suffix }}
+  </header>
+
+  <div{{ content_attributes }} class="scholarly-work-teaser__content">
+    {{ content }}
+  </div>
+</article>

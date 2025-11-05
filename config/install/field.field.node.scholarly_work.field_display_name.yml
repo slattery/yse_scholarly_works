@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_display_name
+    - node.type.scholarly_work
+id: node.scholarly_work.field_display_name
+field_name: field_display_name
+entity_type: node
+bundle: scholarly_work
+label: 'Display Name'
+description: 'Title of the work with possible markup.'
+required: false
+translatable: false
+default_value: []
+default_value_callback: ''
+settings: {}
+field_type: text
