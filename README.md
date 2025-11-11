@@ -14,11 +14,26 @@
 - **Fields:** 51 total (27 storage, 5 display-only)
 - **Display modes:** 5 (full, teaser, card, item, searchidx)
 
-### Key Features
-- **Typed Identifiers:** Using `typed_identifier` field for flexible identifier storage
+### Key Capabilities
+- **Typed Identifiers:** openalex, doi, pmid, pmcid, url, urn, orcid, generic
+- **Author Data:** First, middle, last names with unlimited text storage
 - **Author Relationships:** Join profiles and works via typed_identifier matching
-- **License Awareness:** Abstract display respects copyright restrictions
-- **View Modes:** Optimized rendering for different contexts (full, card, list, search)
+- **Bibliographic Info:** Volume, issue, page ranges
+- **License-Aware:** Abstract display filtered by copyright permissions (cc-by, cc-by-nc, cc-by-nc-sa, cc-by-sa, public-domain)
+- **Date Handling:** Publication dates, creation/update timestamps with proper timezone support
+- **SDG Tracking:** Sustainable Development Goals extracted from OpenAlex data
+- **Open Access:** Status tracking and URL capture
+
+### Dependencies
+```yaml
+Required Modules:
+  - typed_identifier     # Flexible identifier field type
+  - migrate_plus         # Extended migration framework
+  - migrate_conditions   # Conditional migration processing
+  - node                 # Core node system
+  - field                # Core field system
+  - migrate              # Core migration system
+  - datetime             # Date field support
 
 ### Dependencies
 - **Required:** typed_identifier module (web/modules/custom)

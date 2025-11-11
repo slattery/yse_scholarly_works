@@ -20,7 +20,6 @@ settings:
   allowed_identifier_types:
     - openalex
     - orcid
-    - netid
     - generic
   custom_generic_labels: true
 field_type: typed_identifier

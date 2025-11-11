@@ -141,8 +141,28 @@ class ToTypedIdentifier extends ProcessPluginBase implements ContainerFactoryPlu
           continue;
         }
 
-        // Special case: If key is 'id', use parser to auto-detect identifier type.
-        if ($key === 'id' && $this->parser) {
+        // Track if we extracted an ID from a nested object.
+        $extracted_from_nested = FALSE;
+
+        // Handle nested objects/arrays - look for ID within them.
+        if ((is_array($val) || is_object($val)) && !is_string($val)) {
+          // Convert to array if object.
+          $nested = is_array($val) ? $val : (array) $val;
+
+          // Try to extract ID from nested object.
+          if (isset($nested['id'])) {
+            $val = $nested['id'];
+            $extracted_from_nested = TRUE;
+          }
+          else {
+            // No ID found in nested object - skip this value.
+            continue;
+          }
+        }
+
+        // Special case: If key is 'id' OR we extracted an ID from nested object,
+        // use parser to auto-detect identifier type.
+        if (($key === 'id' || $extracted_from_nested) && $this->parser) {
           $parsed = $this->parser->parse((string) $val);
 
           if ($parsed) {

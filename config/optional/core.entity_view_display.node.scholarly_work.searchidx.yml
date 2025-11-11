@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.scholarly_work.field_work_typed_ids
     - field.field.node.scholarly_work.field_doi
     - field.field.node.scholarly_work.field_raw_type
     - field.field.node.scholarly_work.field_raw_oa_status
+    - field.field.node.scholarly_work.field_work_display_name
     - field.field.node.scholarly_work.field_source_display_name
     - field.field.node.scholarly_work.field_raw_names_first
     - field.field.node.scholarly_work.field_raw_names_middle
@@ -17,125 +17,127 @@ dependencies:
     - field.field.node.scholarly_work.field_license
     - field.field.node.scholarly_work.field_primary_url
     - field.field.node.scholarly_work.field_publication_date_string
+    - field.field.node.scholarly_work.field_publication_date_object
     - field.field.node.scholarly_work.field_publication_year_digits
-    - field.field.node.scholarly_work.field_abstract_text_display
+    - field.field.node.scholarly_work.field_abstract_text_index
     - node.type.scholarly_work
   module:
-    - typed_identifier
-id: node.scholarly_work.teaser
+    - datetime
+id: node.scholarly_work.searchidx
 targetEntityType: node
 bundle: scholarly_work
-mode: teaser
+mode: searchidx
 content:
-  field_work_display_name:
+  field_doi:
     type: string
     region: content
     weight: 0
     settings:
       link_to_entity: false
     third_party_settings: {}
-  field_work_typed_ids:
-    type: typed_identifier
-    region: content
-    weight: 1
-    settings: {}
-    third_party_settings: {}
-  field_doi:
-    type: string
-    region: content
-    weight: 2
-    settings:
-      link_to_entity: false
-    third_party_settings: {}
   field_raw_type:
     type: string
     region: content
-    weight: 3
+    weight: 1
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_raw_oa_status:
     type: string
     region: content
-    weight: 4
+    weight: 2
+    settings:
+      link_to_entity: false
+    third_party_settings: {}
+  field_work_display_name:
+    type: string
+    region: content
+    weight: 3
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_source_display_name:
     type: string
     region: content
-    weight: 5
+    weight: 4
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_raw_names_first:
     type: string
     region: content
-    weight: 6
+    weight: 5
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_raw_names_middle:
-    type: text
+    type: text_default
     region: content
-    weight: 7
+    weight: 6
     settings: {}
     third_party_settings: {}
   field_raw_names_last:
     type: string
     region: content
-    weight: 8
+    weight: 7
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_biblio_volume:
     type: string
     region: content
-    weight: 9
+    weight: 8
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_biblio_issue:
     type: string
     region: content
-    weight: 10
+    weight: 9
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_biblio_page_first:
     type: string
     region: content
-    weight: 11
+    weight: 10
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_biblio_page_last:
     type: string
     region: content
-    weight: 12
+    weight: 11
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_license:
     type: string
     region: content
-    weight: 13
+    weight: 12
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_primary_url:
     type: string
     region: content
-    weight: 14
+    weight: 13
     settings:
       link_to_entity: false
     third_party_settings: {}
   field_publication_date_string:
     type: string
     region: content
-    weight: 15
+    weight: 14
     settings:
       link_to_entity: false
+    third_party_settings: {}
+  field_publication_date_object:
+    type: datetime_default
+    region: content
+    weight: 15
+    settings:
+      format_type: medium
     third_party_settings: {}
   field_publication_year_digits:
     type: number_integer
@@ -145,8 +147,8 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {}
-  field_abstract_text_display:
-    type: text
+  field_abstract_text_index:
+    type: text_default
     region: content
     weight: 17
     settings: {}
@@ -154,12 +156,15 @@ content:
 hidden:
   langcode: true
   status: true
-  field_abstract_text_index: true
+  field_abstract_text_display: true
+  field_authors_typed_ids: true
   field_citation_text: true
-  field_publication_date_object: true
   field_publication_year_string: true
   field_qa_status: true
-  field_authors_typed_ids: true
+  field_raw_names_first: true
+  field_raw_names_middle: true
+  field_raw_names_last: true
+  field_raw_sdgs: true
   field_repo_created_date: true
   field_repo_updated_date: true
-  field_raw_sdgs: true
+  field_work_typed_ids: true

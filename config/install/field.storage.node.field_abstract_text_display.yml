@@ -6,7 +6,7 @@ dependencies:
 id: node.field_abstract_text_display
 field_name: field_abstract_text_display
 entity_type: node
-type: text
+type: text_long
 settings: {}
 module: core
 locked: false

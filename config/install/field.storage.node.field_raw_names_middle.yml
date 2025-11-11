@@ -6,7 +6,7 @@ dependencies:
 id: node.field_raw_names_middle
 field_name: field_raw_names_middle
 entity_type: node
-type: text
+type: text_long
 settings: {}
 module: core
 locked: false
