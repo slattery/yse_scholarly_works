@@ -8,3 +8,38 @@
  * scholarly works from OpenAlex with comprehensive metadata support,
  * including typed identifiers and automated field-aware validation.
  */
+
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for a specific Views exposed form.
+ */
+function yse_scholarly_works_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view && $view->id() == 'content' && $view->current_display == 'page_1') {
+    if (isset($form['type'])) {
+      // There are 10K of these nodes so they get their own tab under Content.
+      // so we hardcode WHERE ("node_field_data"."type" NOT IN ('scholarly_work'))
+      unset($form['type']['#options']['scholarly_work']); // Replace with your content type bundle machine name
+    }
+  }
+}
+
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+
+function yse_scholarly_works_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Check if we are on the correct view and display.
+  if ($view->storage->get('id') === 'content' && $view->current_display === 'page_1') {
+    // Define the content types to exclude.
+    $excluded_types = ['scholarly_work'];
+    $node_table_alias = $query->getTableInfo['node_field_data']['alias'] ?? 'node_field_data';
+    $query->addWhere(
+      0, // Group number (0 for the default WHERE group)
+      "$node_table_alias.type",
+      $excluded_types,
+      'NOT IN'
+    );
+  }
+}

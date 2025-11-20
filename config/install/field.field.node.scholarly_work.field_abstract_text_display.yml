@@ -4,15 +4,19 @@ dependencies:
   config:
     - field.storage.node.field_abstract_text_display
     - node.type.scholarly_work
+  module:
+    - text
 id: node.scholarly_work.field_abstract_text_display
 field_name: field_abstract_text_display
 entity_type: node
 bundle: scholarly_work
 label: 'Abstract (Display)'
-description: 'Abstract text for public display (license-aware). Only populated when license permits.'
+description: 'Abstract text for public display (license-aware). Only populated when license permits. Supports full HTML formatting.'
 required: false
 translatable: false
 default_value: []
 default_value_callback: ''
-settings: {}
+settings:
+  allowed_formats:
+    - full_html
 field_type: text_long

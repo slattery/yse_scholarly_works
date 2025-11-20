@@ -14,9 +14,9 @@ source:
   data_fetcher_plugin: file
   data_parser_plugin: ndjson
   urls:
-    - 'file:///app/web/modules/custom/yse_scholarly_works/examples/migrations/records.ndjson'
-  # Selector to iterate through the results array in the JSON
-  item_selector: 'results'
+    - 'public://migrations/allscholarlyworksrecords.ndjson'
+  # For NDJSON, each line is a complete item, so item_selector is not needed
+  # item_selector: '/' # Or leave empty for root-level items
   ids:
     id:
       type: string
@@ -81,7 +81,20 @@ source:
 
 process:
   # === Node Title and Basic Fields ===
-  title: title
+  # Truncate title to 255 chars and use display_name as fallback if title is empty
+  title:
+    -
+      plugin: if_condition
+      source: title
+      condition: empty
+      else_get: title
+      then_get: display_name
+    -
+      plugin: substr
+      length: 255
+    -
+      plugin: skip_on_empty
+      method: process
 
   # === Typed Identifier Transformations ===
   field_work_typed_ids:
@@ -108,12 +121,21 @@ process:
   # === Simple Field Mappings ===
   field_doi: doi
   field_raw_type: type
-  field_work_display_name: display_name
+  field_work_display_name/value: display_name
+  field_work_display_name/format:
+    plugin: default_value
+    default_value: basic_html
 
   # === Nested Field Extraction ===
+  # Publication venue coalesce using if_condition:
+  # Primary: raw_source_name (~761 records with values)
+  # Fallback: source/display_name (768 records have it)
+  # Total: ~814 records should have at least one value
   field_source_display_name:
-    plugin: get
-    source: primary_location/source/display_name
+    plugin: if_condition
+    source: primary_location/raw_source_name
+    condition: not:empty
+    else_get: primary_location/source/display_name
 
   field_license:
     plugin: get
@@ -168,26 +190,39 @@ process:
     source: open_access/oa_status
 
   # === Abstract Fields ===
-  # TODO: Phase 4 - Re-enable license-aware filtering with proper row-level logic
-  # Temporarily disabled because method: row skips entire records when license not in allowed list
-  field_abstract_text_index: abstract_assembled
-  field_abstract_text_display:
-      -
-        plugin: get
-        source: abstract_assembled
-      -
-        plugin: skip_on_condition
-        method: process
-        condition:
-          plugin: not:in_array
-          value: '@primary_location/license'
-          array:
-            - cc-by
-            - cc-by-nc
-            - cc-by-nc-sa
-            - cc-by-sa
-            - public-domain
 
+  field_abstract_text_index:
+    -
+      plugin: sub_process
+      source:
+        - abstract_assembled
+      process:
+        value: abstract_assembled
+        format:
+          plugin: default_value
+          default_value: full_html
+  field_abstract_text_display:
+    -
+      plugin: skip_on_condition
+      method: process
+      condition:
+        plugin: not:in_array
+        value: '@primary_location/license'
+        array:
+          - cc-by
+          - cc-by-nc
+          - cc-by-nc-sa
+          - cc-by-sa
+          - public-domain
+    -
+      plugin: sub_process
+      source:
+        - abstract_assembled
+      process:
+        value: abstract_assembled
+        format:
+          plugin: default_value
+          default_value: full_html
 
   # === Date Fields (ISO 8601 Parsing) ===
   # created_date: "2025-10-10T00:00:00" - already in correct format

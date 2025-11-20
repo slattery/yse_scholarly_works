@@ -143,11 +143,14 @@ class ToTypedIdentifier extends ProcessPluginBase implements ContainerFactoryPlu
 
         // Track if we extracted an ID from a nested object.
         $extracted_from_nested = FALSE;
+        // Track nested object for processing additional fields.
+        $nested_obj = NULL;
 
         // Handle nested objects/arrays - look for ID within them.
         if ((is_array($val) || is_object($val)) && !is_string($val)) {
           // Convert to array if object.
           $nested = is_array($val) ? $val : (array) $val;
+          $nested_obj = $nested;
 
           // Try to extract ID from nested object.
           if (isset($nested['id'])) {
@@ -187,6 +190,19 @@ class ToTypedIdentifier extends ProcessPluginBase implements ContainerFactoryPlu
               'itemtype' => $itemtype,
               'itemvalue' => $itemvalue,
             ];
+
+            // If we extracted from a nested object, also process sibling fields.
+            if ($extracted_from_nested && $nested_obj) {
+              $this->processNestedSiblings(
+                $nested_obj,
+                $exclude_keys,
+                $check_field_settings,
+                $allowed_types,
+                $generic_allowed,
+                $use_generic_fallback,
+                $items
+              );
+            }
             continue;
           }
           // If parser failed, fall through to normal key-based logic.
@@ -214,6 +230,65 @@ class ToTypedIdentifier extends ProcessPluginBase implements ContainerFactoryPlu
     }
 
     return $items;
+  }
+
+  /**
+   * Process sibling fields within a nested object.
+   *
+   * This method handles cases where an identifier (like ID) is extracted from a
+   * nested object, and we need to also process sibling fields (like ORCID).
+   *
+   * @param array $nested_obj
+   *   The nested object as an associative array.
+   * @param array $exclude_keys
+   *   Keys to exclude from processing.
+   * @param bool $check_field_settings
+   *   Whether to validate against field settings.
+   * @param array $allowed_types
+   *   Allowed identifier types from field settings.
+   * @param bool $generic_allowed
+   *   Whether 'generic' is in allowed types.
+   * @param bool $use_generic_fallback
+   *   Whether to use generic:key fallback.
+   * @param array &$items
+   *   Reference to items array to append to.
+   */
+  protected function processNestedSiblings(array $nested_obj, array $exclude_keys, bool $check_field_settings, array $allowed_types, bool $generic_allowed, bool $use_generic_fallback, array &$items) {
+    foreach ($nested_obj as $key => $val) {
+      // Skip ID (already processed) and excluded keys.
+      if ($key === 'id' || in_array($key, $exclude_keys, TRUE)) {
+        continue;
+      }
+
+      // Skip empty values.
+      if (empty($val)) {
+        continue;
+      }
+
+      // Skip nested structures - only process scalar values.
+      if (is_array($val) || is_object($val)) {
+        continue;
+      }
+
+      // Determine itemtype from key.
+      $itemtype = $this->determineItemtype(
+        (string) $key,
+        $check_field_settings,
+        $allowed_types,
+        $generic_allowed,
+        $use_generic_fallback
+      );
+
+      // Skip if no valid itemtype determined.
+      if ($itemtype === NULL) {
+        continue;
+      }
+
+      $items[] = [
+        'itemtype' => $itemtype,
+        'itemvalue' => (string) $val,
+      ];
+    }
   }
 
   /**

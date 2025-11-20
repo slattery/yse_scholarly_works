@@ -4,15 +4,19 @@ dependencies:
   config:
     - field.storage.node.field_work_display_name
     - node.type.scholarly_work
+  module:
+    - text
 id: node.scholarly_work.field_work_display_name
 field_name: field_work_display_name
 entity_type: node
 bundle: scholarly_work
 label: Title
-description: 'Official title of the scholarly work'
+description: 'Official title of the scholarly work (supports basic HTML like <i>, <b>, <em>, <strong>)'
 required: false
 translatable: false
 default_value: []
 default_value_callback: ''
-settings: {}
-field_type: text
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

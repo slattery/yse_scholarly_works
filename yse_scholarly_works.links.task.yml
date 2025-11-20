@@ -1,0 +1,4 @@
+yse_scholarly_works.admin.works:
+  title: Works
+  route_name: view.content.works
+  base_route: system.admin_content

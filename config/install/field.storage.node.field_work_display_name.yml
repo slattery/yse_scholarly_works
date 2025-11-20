@@ -3,12 +3,14 @@ status: true
 dependencies:
   module:
     - node
+    - text
 id: node.field_work_display_name
 field_name: field_work_display_name
 entity_type: node
-type: text
-settings: {}
-module: core
+type: text_long
+settings:
+  max_length: null
+module: text
 locked: false
 cardinality: 1
 translatable: false
